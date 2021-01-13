@@ -13,8 +13,14 @@ from redbot.core.utils.menus import start_adding_reactions
 
 from .events import ReactEvents
 
+default_settings = {
+    "ENABLED": False,
+    "ROLE": [],
+    "CHANNELS": []
+}
 
-log = logging.getLogger("red.trusty-cogs.reactcmds")
+
+log = logging.getLogger("red.ds-cogs.reactcmds")
 _ = Translator("ReactCmds", __file__)
 
 
@@ -28,25 +34,11 @@ class ReactCmds(ReactEvents, commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.config = Config.get_conf(self, identifier=218773382617890828, force_registration=True)
+        self.config = Config.get_conf(self, identifier=451690489)
         self.config.register_global(version="0.0.0")
-        default_guild = {
-            "reaction_roles": {},
-            "auto_roles": [],
-        }
-        default_role = {
-            "sticky": False,
-            "auto": False,
-            "reactions": [],
-            "selfassignable": False,
-            "selfremovable": False,
-        }
-        default_member = {"sticky_roles": []}
-        self.config.register_guild(**default_guild)
-        self.config.register_role(**default_role)
-        self.config.register_member(**default_member)
+        self.config.register_guild(**default_settings)
         self.settings = {}
 
     async def initialize(self):
-        
+
         self.settings = await self.config.all_guilds()
